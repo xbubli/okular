@@ -220,6 +220,7 @@ public:
     QAction * aMouseMagnifier;
     KToggleAction * aTrimToSelection;
     KToggleAction * aToggleAnnotator;
+    KToggleAction * aToggleSignature;
     KSelectAction * aZoom;
     QAction * aZoomIn;
     QAction * aZoomOut;
@@ -346,6 +347,7 @@ PageView::PageView( QWidget *parent, Okular::Document *document )
     d->aMouseSelect = nullptr;
     d->aMouseTextSelect = nullptr;
     d->aToggleAnnotator = nullptr;
+    d->aToggleSignature = nullptr;
     d->aZoomFitWidth = nullptr;
     d->aZoomFitPage = nullptr;
     d->aZoomAutoFit = nullptr;
@@ -659,6 +661,10 @@ void PageView::setupActions( KActionCollection * ac )
     d->aToggleAnnotator->setCheckable( true );
     connect( d->aToggleAnnotator, &QAction::toggled, this, &PageView::slotToggleAnnotator );
     ac->setDefaultShortcut(d->aToggleAnnotator, Qt::Key_F6);
+
+    d->aToggleSignature  = new KToggleAction(QIcon::fromTheme( QStringLiteral("application-pkcs7-signature") ), i18n("&Sign"), this);
+    ac->addAction(QStringLiteral("mouse_toggle_sign"), d->aToggleSignature );
+    d->aToggleSignature->setCheckable( true );
 
     ToolAction *ta = new ToolAction( this );
     ac->addAction( QStringLiteral("mouse_selecttools"), ta );
@@ -1224,6 +1230,10 @@ void PageView::updateActionState( bool haspages, bool documentChanged, bool hasf
         }
         d->aToggleAnnotator->setEnabled( allowAnnotations );
     }
+
+    if ( d->aToggleSignature )
+        d->aToggleSignature->setEnabled( haspages );
+
 #ifdef HAVE_SPEECH
     if ( d->aSpeakDoc )
     {
