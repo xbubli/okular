@@ -79,6 +79,7 @@
     <Action name="mouse_magnifier"/>
     <Separator/>
     <Action name="mouse_toggle_annotate"/>
+    <Separator/>
     <Action name="mouse_toggle_sign"/>
     <Separator/>
     <Action name="speak_document"/>
@@ -106,5 +107,7 @@
   <Action name="mouse_drag"/>
   <Action name="mouse_zoom"/>
   <Action name="mouse_selecttools"/>
+  <Separator/>
+  <Action name="mouse_toggle_sign"/>
 </ToolBar>
 </kpartgui>
