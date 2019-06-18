@@ -113,7 +113,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
 find_package(ZLIB REQUIRED)
 
 # This is here instead of in generators since we use if(Poppler_Qt5_FOUND) in autotests/
-find_package(Poppler "0.12.1" COMPONENTS Qt5)
+set(ENV{PKG_CONFIG_PATH} "/usr/local/lib64/pkgconfig")
+find_package(Poppler "0.73" COMPONENTS Qt5)
 set_package_properties("Poppler" PROPERTIES
         TYPE RECOMMENDED
         PURPOSE "Support for PDF files in okular.")
@@ -334,6 +335,7 @@ set(okularpart_conf_SRCS
    conf/dlgannotations.cpp
    conf/dlgperformance.cpp
    conf/dlgpresentation.cpp
+   conf/dlgsignatures.cpp
    conf/editannottooldialog.cpp
    conf/editdrawingtooldialog.cpp
    conf/widgetannottools.cpp
@@ -406,6 +408,7 @@ ki18n_wrap_ui(okularpart_SRCS
    conf/dlgannotationsbase.ui
    conf/dlgperformancebase.ui
    conf/dlgpresentationbase.ui
+   conf/dlgsignaturesbase.ui
 )
 
 kconfig_add_kcfg_files(okularpart_SRCS conf/settings.kcfgc)
