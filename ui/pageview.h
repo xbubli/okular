@@ -253,6 +253,7 @@ Q_OBJECT
         void slotSetMouseTextSelect();
         void slotSetMouseTableSelect();
         void slotToggleAnnotator( bool );
+        void slotToggleSignature();
         void slotAutoScrollUp();
         void slotAutoScrollDown();
         void slotScrollUp( bool singleStep = false );

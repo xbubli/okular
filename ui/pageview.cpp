@@ -665,6 +665,7 @@ void PageView::setupActions( KActionCollection * ac )
     d->aToggleSignature  = new KToggleAction(QIcon::fromTheme( QStringLiteral("application-pkcs7-signature") ), i18n("&Sign"), this);
     ac->addAction(QStringLiteral("mouse_toggle_sign"), d->aToggleSignature );
     d->aToggleSignature->setCheckable( true );
+    connect( d->aToggleSignature, &QAction::toggled, this, &PageView::slotToggleSignature );
 
     ToolAction *ta = new ToolAction( this );
     ac->addAction( QStringLiteral("mouse_selecttools"), ta );
@@ -5173,6 +5174,17 @@ void PageView::slotToggleAnnotator( bool on )
     d->annotator->setHidingForced( false );
 
     inHere = false;
+}
+
+void PageView::slotToggleSignature()
+{
+    d->messageWindow->display( i18n(
+        "Draw a rectangle to insert the signature field"
+        ), QString(), PageViewMessage::Info, -1 );
+
+    // force an update of the cursor
+    updateCursor();
+    Okular::Settings::self()->save();
 }
 
 void PageView::slotAutoScrollUp()
