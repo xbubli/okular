@@ -65,6 +65,9 @@ class PageViewAnnotator : public QObject
         void setHidingForced( bool forced );
         bool hidingWasForced() const;
 
+        void setSignatureMode( bool forced );
+        bool signatureMode() const;
+
         // methods used when creating the annotation
         // @return Is a tool currently selected?
         bool active() const;
@@ -107,6 +110,7 @@ class PageViewAnnotator : public QObject
         bool m_toolsEnabled;
         bool m_continuousMode;
         bool m_hidingWasForced;
+        bool m_signatureMode;
 
         // creation related variables
         int m_lastToolID;

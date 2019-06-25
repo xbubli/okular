@@ -312,18 +312,40 @@ class PickPointEngine : public AnnotatorEngine
             return QList< Okular::Annotation* >() << ann;
         }
 
-    private:
+    protected:
         bool clicked;
+        bool m_block;
+        double xscale,yscale;
+
+    private:
         Okular::NormalizedRect rect;
         Okular::NormalizedPoint startpoint;
         Okular::NormalizedPoint point;
         QPixmap pixmap;
         QString hoverIconName, iconName;
         int size;
-        double xscale,yscale;
         double pagewidth, pageheight;
         bool center;
-        bool m_block;
+};
+
+class PickPointEngine2 : public PickPointEngine
+{
+    public:
+        PickPointEngine2( const QDomElement & engineElement )
+            : PickPointEngine( engineElement )
+        {
+            clicked = false;
+            m_block = true;
+            xscale = 1.0;
+            yscale = 1.0;
+        }
+
+        QRect event( EventType type, Button button, double nX, double nY, double xScale, double yScale, const Okular::Page * page ) override
+        {
+            return PickPointEngine::event(type, button, nX, nY, xScale, yScale, page);
+        }
+
+
 };
 
 /** @short PolyLineEngine */
@@ -781,9 +803,19 @@ bool PageViewAnnotator::hidingWasForced() const
     return m_hidingWasForced;
 }
 
+void PageViewAnnotator::setSignatureMode( bool sigMode )
+{
+    m_signatureMode = sigMode;
+}
+
+bool PageViewAnnotator::signatureMode() const
+{
+    return m_signatureMode;
+}
+
 bool PageViewAnnotator::active() const
 {
-    return m_engine && m_toolBar;
+    return (m_engine && m_toolBar) || m_signatureMode;
 }
 
 bool PageViewAnnotator::annotating() const
@@ -793,7 +825,7 @@ bool PageViewAnnotator::annotating() const
 
 QCursor PageViewAnnotator::cursor() const
 {
-    return m_engine->cursor();
+    return m_engine ? m_engine->cursor() : Qt::CrossCursor;
 }
 
 QRect PageViewAnnotator::performRouteMouseOrTabletEvent(const AnnotatorEngine::EventType & eventType, const AnnotatorEngine::Button & button,
@@ -808,6 +840,14 @@ QRect PageViewAnnotator::performRouteMouseOrTabletEvent(const AnnotatorEngine::E
     {
         detachAnnotation();
         return QRect();
+    }
+
+    if (signatureMode() && eventType == AnnotatorEngine::Press)
+    {
+        QDomElement elem;
+        elem.setTagName("engine");
+        elem.setAttribute("block", 1);
+        m_engine = new PickPointEngine2(elem);
     }
 
     // 1. lock engine to current item
@@ -895,6 +935,8 @@ QRect PageViewAnnotator::routeTabletEvent( QTabletEvent * e, PageViewItem * item
         return QRect();
     }
 
+
+
     // We set all tablet events that take place over the annotations toolbar to ignore so that corresponding mouse
     // events will be delivered to the toolbar.  However, we still allow the annotations code to handle
     // TabletMove and TabletRelease events in case the user is drawing an annotation onto the toolbar.
@@ -930,7 +972,7 @@ bool PageViewAnnotator::routeKeyEvent( QKeyEvent * event )
 
 bool PageViewAnnotator::routePaints( const QRect & wantedRect ) const
 {
-    return m_engine && m_toolBar && wantedRect.intersects( m_lastDrawnRect ) && m_lockedItem;
+    return m_engine && /*m_toolBar &&*/ wantedRect.intersects( m_lastDrawnRect ) && m_lockedItem;
 }
 
 void PageViewAnnotator::routePaint( QPainter * painter, const QRect & paintRect )
@@ -1080,7 +1122,8 @@ void PageViewAnnotator::slotToolDoubleClicked( int /*toolID*/ )
 
 void PageViewAnnotator::detachAnnotation()
 {
-    m_toolBar->selectButton( -1 );
+    if( !signatureMode() )
+        m_toolBar->selectButton( -1 );
 }
 
 QString PageViewAnnotator::defaultToolName( const QDomElement &toolElement )
