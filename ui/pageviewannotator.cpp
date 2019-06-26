@@ -18,6 +18,7 @@
 #include <qlist.h>
 #include <qpainter.h>
 #include <qset.h>
+#include <qstringlist.h>
 #include <qvariant.h>
 #include <QInputDialog>
 #include <kiconloader.h>
@@ -187,7 +188,7 @@ class PickPointEngine : public AnnotatorEngine
             ta->window().setSummary( summary );
         }
 
-        QList< Okular::Annotation* > end() override
+        virtual QList< Okular::Annotation* > end() override
         {
             // find out annotation's description node
             if ( m_annotElement.isNull() )
@@ -343,6 +344,19 @@ class PickPointEngine2 : public PickPointEngine
         QRect event( EventType type, Button button, double nX, double nY, double xScale, double yScale, const Okular::Page * page ) override
         {
             return PickPointEngine::event(type, button, nX, nY, xScale, yScale, page);
+        }
+
+        QList< Okular::Annotation* > end() override
+        {
+            QStringList items;
+            items << "Cert1" << "Cert2";
+
+            bool resok;
+            QString cert = QInputDialog::getItem(nullptr, i18n( "Select certificate to sign with" ), i18n( "Certificates:" ), items, 0, false, &resok);
+
+            m_creationCompleted = false;
+            clicked = false;
+            return QList< Okular::Annotation* >();
         }
 
 
