@@ -339,6 +339,7 @@ set(okularpart_conf_SRCS
    conf/editannottooldialog.cpp
    conf/editdrawingtooldialog.cpp
    conf/widgetannottools.cpp
+   conf/certificatetools.cpp
    conf/widgetconfigurationtoolsbase.cpp
    conf/widgetdrawingtools.cpp
 )
