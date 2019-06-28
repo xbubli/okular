@@ -1138,6 +1138,9 @@ void PageViewAnnotator::detachAnnotation()
 {
     if( !signatureMode() )
         m_toolBar->selectButton( -1 );
+    else
+        setSignatureMode(false);
+
 }
 
 QString PageViewAnnotator::defaultToolName( const QDomElement &toolElement )
