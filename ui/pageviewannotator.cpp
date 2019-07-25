@@ -1151,7 +1151,10 @@ void PageViewAnnotator::detachAnnotation()
     if( !signatureMode() )
         m_toolBar->selectButton( -1 );
     else
+    {
+        m_pageView->displayMessage( QString() );
         setSignatureMode(false);
+    }
 
 }
 
