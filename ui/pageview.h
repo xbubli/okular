@@ -209,6 +209,7 @@ Q_OBJECT
         bool mouseReleaseOverLink( const Okular::ObjectRect * rect ) const;
 
         void createAnnotationsVideoWidgets(PageViewItem *item, const QLinkedList< Okular::Annotation * > &annotations);
+        void initAnnotator();
 
         // don't want to expose classes in here
         class PageViewPrivate * d;

@@ -981,6 +981,13 @@ void PageView::createAnnotationsVideoWidgets(PageViewItem *item, const QLinkedLi
     }
 }
 
+void PageView::initAnnotator()
+{
+    bool allowTools = d->document->pages() > 0 && d->document->isAllowed( Okular::AllowNotes );
+    d->annotator->setToolsEnabled( allowTools );
+    d->annotator->setTextToolsEnabled( allowTools && d->document->supportsSearching() );
+}
+
 //BEGIN DocumentObserver inherited methods
 void PageView::notifySetup( const QVector< Okular::Page * > & pageSet, int setupFlags )
 {
@@ -5163,9 +5170,7 @@ void PageView::slotToggleAnnotator( bool on )
     if ( !d->annotator )
     {
         d->annotator = new PageViewAnnotator( this, d->document );
-        bool allowTools = d->document->pages() > 0 && d->document->isAllowed( Okular::AllowNotes );
-        d->annotator->setToolsEnabled( allowTools );
-        d->annotator->setTextToolsEnabled( allowTools && d->document->supportsSearching() );
+        initAnnotator();
     }
 
     // initialize/reset annotator (and show/hide toolbar)
@@ -5184,6 +5189,7 @@ void PageView::slotSignature()
     if ( !d->annotator )
     {
         d->annotator = new PageViewAnnotator( this, d->document );
+        initAnnotator();
     }
 
     d->annotator->setSignatureMode( true );
