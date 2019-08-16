@@ -113,7 +113,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
 find_package(ZLIB REQUIRED)
 
 # This is here instead of in generators since we use if(Poppler_Qt5_FOUND) in autotests/
-set(ENV{PKG_CONFIG_PATH} "/usr/local/lib64/pkgconfig")
 find_package(Poppler "0.73" COMPONENTS Qt5)
 set_package_properties("Poppler" PROPERTIES
         TYPE RECOMMENDED
