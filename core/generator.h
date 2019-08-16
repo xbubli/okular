@@ -322,6 +322,10 @@ class OKULARCORE_EXPORT Generator : public QObject
          */
         virtual bool canGenerateTextPage() const;
 
+        virtual bool canSign() const { return false; }
+
+        virtual void sign() { return; }
+
         /**
          * This method can be called to trigger the generation of
          * a text page for the given @p page.

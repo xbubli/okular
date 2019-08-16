@@ -1031,6 +1031,8 @@ class OKULARCORE_EXPORT Document : public QObject
         */
         void reloadDocument() const;
 
+        void sign();
+
         /**
          * Returns the part of document covered by the given signature @p info.
          *
@@ -1226,6 +1228,7 @@ class OKULARCORE_EXPORT Document : public QObject
          * @since 1.4
          */
         void refreshFormWidget( Okular::FormField *field );
+
     private:
         /// @cond PRIVATE
         friend class DocumentPrivate;

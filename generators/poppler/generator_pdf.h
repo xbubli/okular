@@ -97,6 +97,9 @@ class PDFGenerator : public Okular::Generator, public Okular::ConfigInterface, p
         bool save( const QString &fileName, SaveOptions options, QString *errorText ) override;
         Okular::AnnotationProxy* annotationProxy() const override;
 
+        bool canSign() const override {return true;}
+        void sign() override { return; }
+
     protected:
         SwapBackingFileResult swapBackingFile( QString const &newFileName, QVector<Okular::Page*> & newPagesVector ) override;
         bool doCloseDocument() override;

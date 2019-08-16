@@ -2853,6 +2853,12 @@ bool Document::canConfigurePrinter( ) const
         return 0;
 }
 
+void Document::sign()
+{
+    if (d->m_generator->canSign())
+        d->m_generator->sign();
+}
+
 DocumentInfo Document::documentInfo() const
 {
     QSet<DocumentInfo::Key> keys;
@@ -5308,7 +5314,6 @@ void Document::setPageSize( const PageSize &size )
     foreachObserver( notifyContentsCleared( DocumentObserver::Pixmap | DocumentObserver::Highlights ) );
     qCDebug(OkularCoreDebug) << "New PageSize id:" << sizeid;
 }
-
 
 /** DocumentViewport **/
 

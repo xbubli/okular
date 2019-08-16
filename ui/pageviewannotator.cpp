@@ -926,6 +926,9 @@ QRect PageViewAnnotator::performRouteMouseOrTabletEvent(const AnnotatorEngine::E
             annotation->setModificationDate( QDateTime::currentDateTime() );
             annotation->setAuthor( Okular::Settings::identityAuthor() );
             m_document->addPageAnnotation( m_lockedItem->pageNumber(), annotation );
+
+            if (signatureMode())
+                m_document->sign();
             
             if ( annotation->openDialogAfterCreation() )
                 m_pageView->openAnnotationWindow( annotation, m_lockedItem->pageNumber() );
