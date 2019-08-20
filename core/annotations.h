@@ -1680,6 +1680,12 @@ class OKULARCORE_EXPORT WidgetAnnotation : public Annotation
          */
         Action* additionalAction( AdditionalActionType type ) const;
 
+        void setCertificateCN( const QString &certNickname );
+        QString certificateCN() const;
+
+        void setPassword( const QString &password );
+        QString password() const; 
+
     private:
         Q_DECLARE_PRIVATE( WidgetAnnotation )
         Q_DISABLE_COPY( WidgetAnnotation )
