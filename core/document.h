@@ -1031,7 +1031,7 @@ class OKULARCORE_EXPORT Document : public QObject
         */
         void reloadDocument() const;
 
-        void sign();
+        void sign( const Okular::Annotation* pWhichAnnotation );
 
         /**
          * Returns the part of document covered by the given signature @p info.
