@@ -2065,7 +2065,7 @@ Okular::AnnotationProxy* PDFGenerator::annotationProxy() const
 void PDFGenerator::sign( const Okular::Annotation* pWhichAnnotation )
 {
     Poppler::Annotation *popplerAnn = qvariant_cast< Poppler::Annotation * >( pWhichAnnotation->nativeId() );
-    pdfdoc->sign( popplerAnn );
+    pdfdoc->sign( popplerAnn, pWhichAnnotation->certificateCN(), pWhichAnnotation->password() );
 }
 
 #include "generator_pdf.moc"
